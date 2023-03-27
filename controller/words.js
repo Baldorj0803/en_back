@@ -11,7 +11,7 @@ exports.getWords = asyncHandler(async (req, res, next) => {
 
   ["select", "sort", "page", "limit"].forEach((el) => delete req.query[el]);
 
-  const pagination = await paginate(page, limit, Word);
+  const pagination = await paginate(page, limit, Word, req.query);
 
   const words = await Word.find(req.query, select)
     .populate("category")
@@ -72,19 +72,7 @@ exports.updateWord = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteWord = asyncHandler(async (req, res, next) => {
-  const w = await Word.findById(req.params.id);
-
-  console.log(w);
-
-  // if (!word) {
-  //   throw new MyError(req.params.id + " ID-тэй категори байхгүйээээ.", 400);
-  // }
-
-  // word.remove();
-
-  let word = await Word.findOneAndRemove({ id: req.params.id });
-
-  console.log(word);
+  let word = await Word.deleteOne({ _id: req.params.id });
 
   res.status(200).json({
     success: true,

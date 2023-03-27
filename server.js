@@ -78,7 +78,8 @@ app.use(logger);
 // Body дахь өгөгдлийг Json болгож өгнө
 app.use(express.json());
 // // Өөр өөр домэйнтэй вэб аппуудад хандах боломж өгнө
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
 // // Клиент вэб аппуудыг мөрдөх ёстой нууцлал хамгаалалтыг http header ашиглан зааж өгнө
 // app.use(helmet());
 // // клиент сайтаас ирэх Cross site scripting халдлагаас хамгаална
