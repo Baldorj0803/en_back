@@ -116,3 +116,13 @@ exports.updateSaveWord = asyncHandler(async (req, res, next) => {
     code: res.statusCode,
   });
 });
+
+exports.allClear = asyncHandler(async (req, res, next) => {
+  let words = await Word.updateMany({}, { saved: false });
+
+  res.status(200).json({
+    success: true,
+    data: words,
+    code: res.statusCode,
+  });
+});
