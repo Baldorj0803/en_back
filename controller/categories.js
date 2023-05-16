@@ -16,7 +16,8 @@ exports.getCategories = asyncHandler(async (req, res, next) => {
   const categories = await Category.find(req.query, select)
     .sort(sort)
     .skip(pagination.start - 1)
-    .limit(limit);
+    .limit(limit)
+    .populate("words");
 
   res.status(200).json({
     success: true,

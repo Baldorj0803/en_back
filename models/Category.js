@@ -40,11 +40,12 @@ const CategorySchema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-CategorySchema.virtual("books", {
-  ref: "Book",
+CategorySchema.virtual("words", {
+  ref: "Word",
   localField: "_id",
   foreignField: "category",
   justOne: false,
+  count: true,
 });
 
 CategorySchema.pre("remove", async function (next) {
