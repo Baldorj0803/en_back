@@ -11,6 +11,11 @@ exports.getWords = asyncHandler(async (req, res, next) => {
 
   ["select", "sort", "page", "limit"].forEach((el) => delete req.query[el]);
 
+  // req.query = { en: { $regex: "like", $options: "i" } };
+
+  Object.keys(req.query).map((name) => {
+    req.query[name] = { $regex: req.query[name], $options: "i" };
+  });
   const pagination = await paginate(page, limit, Word, req.query);
 
   const words = await Word.find(req.query, select)

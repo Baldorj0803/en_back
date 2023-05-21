@@ -17,6 +17,7 @@ const cors = require("cors");
 // Router оруулж ирэх
 const categoriesRoutes = require("./routes/categories");
 const wordsRoutes = require("./routes/words");
+const usersRoutes = require("./routes/user");
 // const booksRoutes = require("./routes/books");
 // const usersRoutes = require("./routes/users");
 // const commentsRoutes = require("./routes/comments");
@@ -101,6 +102,7 @@ app.use(cors());
 // REST API RESOURSE
 app.use("/api/v1/categories", categoriesRoutes);
 app.use("/api/v1/words", wordsRoutes);
+app.use("/api/v1/users", usersRoutes);
 // app.use("/api/v1/users", usersRoutes);
 // app.use("/api/v1/comments", commentsRoutes);
 
