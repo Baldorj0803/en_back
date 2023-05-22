@@ -13,9 +13,14 @@ exports.getWords = asyncHandler(async (req, res, next) => {
 
   // req.query = { en: { $regex: "like", $options: "i" } };
 
-  Object.keys(req.query).map((name) => {
-    req.query[name] = { $regex: req.query[name], $options: "i" };
-  });
+  // Object.keys(req.query).map((name) => {
+  //   req.query[name] = { $regex: req.query[name], $options: "i" };
+  // });
+
+  if (req.query["en"]) {
+    req.query["en"] = { $regex: req.query["en"], $options: "i" };
+  }
+
   const pagination = await paginate(page, limit, Word, req.query);
 
   const words = await Word.find(req.query, select)
