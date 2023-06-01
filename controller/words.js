@@ -21,6 +21,10 @@ exports.getWords = asyncHandler(async (req, res, next) => {
     req.query["en"] = { $regex: req.query["en"], $options: "i" };
   }
 
+  if (req.query["category"] && req.query["category"] == "[]") {
+    req.query["category"] = { $exists: true, $not: { $size: 0 } };
+  }
+
   const pagination = await paginate(page, limit, Word, req.query);
 
   const words = await Word.find(req.query, select)
@@ -136,3 +140,7 @@ exports.allClear = asyncHandler(async (req, res, next) => {
     code: res.statusCode,
   });
 });
+
+// let data = await Word.deleteMany({
+//   category: ["64737a5b0e98236faf0ec88e"],
+// });
