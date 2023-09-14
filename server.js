@@ -24,6 +24,10 @@ const usersRoutes = require("./routes/user");
 // const injectDb = require("./middleware/injectDb");
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
+let cron = require('node-cron');
+const Category = require("./models/Category");
+
+
 
 // Аппын тохиргоог process.env рүү ачаалах
 dotenv.config({ path: "./config/config.env" });
@@ -99,6 +103,10 @@ app.use(cors());
 // });
 // app.use(morgan("combined", { stream: accessLogStream }));
 
+cron.schedule('* * * * *',  async() => {
+  let cat = await Category.find();
+  console.log("cron ajilllaa"+cat.length);
+});
 // REST API RESOURSE
 app.use("/api/v1/categories", categoriesRoutes);
 app.use("/api/v1/words", wordsRoutes);
