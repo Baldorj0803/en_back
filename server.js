@@ -18,19 +18,23 @@ const cors = require("cors");
 const categoriesRoutes = require("./routes/categories");
 const wordsRoutes = require("./routes/words");
 const usersRoutes = require("./routes/user");
+const wordsFirebaseRoutes = require("./routes/words_firebase");
 // const booksRoutes = require("./routes/books");
 // const usersRoutes = require("./routes/users");
 // const commentsRoutes = require("./routes/comments");
 // const injectDb = require("./middleware/injectDb");
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
-let cron = require('node-cron');
+let cron = require("node-cron");
 const Category = require("./models/Category");
+const admin = require("firebase-admin");
+const credentials = require("./key.json");
 
-
+const injectDb = require("./middleware/injectDb");
 
 // Аппын тохиргоог process.env рүү ачаалах
 dotenv.config({ path: "./config/config.env" });
+admin.initializeApp({ credential: admin.credential.cert(credentials) });
 
 // Mysql тэй ажиллах обьект
 // const db = require("./config/db-mysql");
@@ -40,6 +44,7 @@ const app = express();
 
 // MongoDB өгөгдлийн сантай холбогдох
 connectDB();
+const db = admin.firestore();
 
 // Манай рест апиг дуудах эрхтэй сайтуудын жагсаалт :
 var whitelist = ["http://localhost:3000"];
@@ -103,14 +108,17 @@ app.use(cors());
 // });
 // app.use(morgan("combined", { stream: accessLogStream }));
 
-cron.schedule('* * * * *',  async() => {
-  let cat = await Category.find();
-  console.log("cron ajilllaa"+cat.length);
-});
+// cron.schedule("* * * * *", async () => {
+//   let cat = await Category.find();
+//   console.log("cron ajilllaa" + cat.length);
+// });
+
+app.use(injectDb(db));
 // REST API RESOURSE
 app.use("/api/v1/categories", categoriesRoutes);
 app.use("/api/v1/words", wordsRoutes);
 app.use("/api/v1/users", usersRoutes);
+app.use("/api/v1/firebase/words", wordsFirebaseRoutes);
 // app.use("/api/v1/users", usersRoutes);
 // app.use("/api/v1/comments", commentsRoutes);
 
